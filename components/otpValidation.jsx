@@ -76,6 +76,7 @@ const OtpValidation = ({ isOtpVisible }) => {
       <View
         style={{
           alignItems: "center",
+          marginTop: 20,
         }}
       >
         <Text

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { useState } from "react";
+import { View, Keyboard, Pressable, Platform } from "react-native";
 
 import Login from "@/components/loginComponent";
 import OtpValidation from "@/components/otpValidation";
@@ -7,7 +7,15 @@ export default function Index() {
   const [isOtpVisible, setIsOtpVisible] = useState(false);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <Pressable
+      onPress={() => {
+        if (Platform.OS !== "web") {
+          Keyboard.dismiss();
+        }
+      }}
+      accessible={false}
+      style={{ flex: 1 }}
+    >
       <View
         style={{
           flex: 1,
@@ -22,6 +30,6 @@ export default function Index() {
         />
         <OtpValidation isOtpVisible={isOtpVisible} />
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 }

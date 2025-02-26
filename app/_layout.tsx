@@ -19,7 +19,6 @@ export default function RootLayout() {
           headerTintColor: theme.text,
         }}
       />
-      ;
     </PaperProvider>
   );
 }

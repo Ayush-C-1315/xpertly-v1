@@ -36,7 +36,7 @@ const Login = ({ onSendOtp }) => {
   };
   return (
     <View>
-      <View style={{ alignItems: "center", marginBottom: "20" }}>
+      <View style={{ alignItems: "center", marginBottom: 20 }}>
         <Text
           style={{
             color: "black",
@@ -47,18 +47,14 @@ const Login = ({ onSendOtp }) => {
         >
           Welcome!
         </Text>
-        <Text
-          style={{
-            color: "black",
-            fontSize: 30,
-
-            fontWeight: "bold",
-          }}
-          variant="headlineLarge"
-        >
-          to{" "}
-          <Text style={{ color: "#8258F6", fontWeight: "bold" }}>Xpertly</Text>
-        </Text>
+        <View style={{ flexDirection: "row", gap: 10 }}>
+          <Text style={{ color: "black", fontSize: 30, fontWeight: "bold" }}>
+            to
+          </Text>
+          <Text style={{ color: "#8258F6", fontSize: 30, fontWeight: "bold" }}>
+            Xpertly
+          </Text>
+        </View>
       </View>
       <View style={{ alignItems: "center" }}>
         <TextInput
@@ -68,13 +64,12 @@ const Login = ({ onSendOtp }) => {
           maxLength={10}
           value={user.phoneNumber}
           onChangeText={(input) => {
-            const value = input.replace(/[^0-9]/g, "");
+            const value = input.replace(/[^0-9]/g, "").slice(0, 10);
             changeHandler({ type: "phoneNumber", value });
           }}
           style={{
             width: "90%",
             backgroundColor: "transparent",
-            color: "white",
           }}
           theme={{
             colors: {
@@ -110,7 +105,8 @@ const Login = ({ onSendOtp }) => {
                 onPress={() => setVisible(true)}
                 style={{
                   backgroundColor: "#f8f9fa",
-                  width: "100%",
+                  width: "auto",
+                  minWidth: 120,
                   borderColor: "black",
                   borderRadius: 10,
                 }}

@@ -78,7 +78,6 @@ const OtpValidation = ({ isOtpVisible }) => {
           alignItems: "center",
         }}
       >
-        ,
         <Text
           style={{
             color: "black",
@@ -88,7 +87,7 @@ const OtpValidation = ({ isOtpVisible }) => {
           Resend OTP in {timer}seconds
         </Text>
         <Button
-          disabled={otp.length > 4 && otp.length <= 6}
+          disabled={!validOtp}
           mode="contained"
           style={{
             marginTop: 10,

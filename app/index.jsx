@@ -13,7 +13,6 @@ export default function Index() {
           flex: 1,
           justifyContent: "center",
           padding: 10,
-          // backgroundColor: "#707070",
         }}
       >
         <Login

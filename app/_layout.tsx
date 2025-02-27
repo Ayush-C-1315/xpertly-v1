@@ -2,12 +2,13 @@ import { Stack } from "expo-router";
 import { Appearance, StatusBar } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { Colors } from "@/constants/colors";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+import "../global.css";
 export default function RootLayout() {
   const colorScheme = Appearance.getColorScheme();
   const theme = colorScheme === "dark" ? Colors.dark : Colors.light;
   return (
-    <SafeAreaProvider>
+    <SafeAreaView style={{ flex: 1 }}>
       <PaperProvider>
         <StatusBar
           barStyle="dark-content"
@@ -22,6 +23,6 @@ export default function RootLayout() {
           }}
         />
       </PaperProvider>
-    </SafeAreaProvider>
+    </SafeAreaView>
   );
 }

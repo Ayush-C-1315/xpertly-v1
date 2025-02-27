@@ -1,6 +1,7 @@
 import { View } from "react-native";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Text, TextInput, Button } from "react-native-paper";
+import withCssInterop from "@/utilities/withCssInterOp";
 import React from "react";
 
 const OtpValidation = ({ isOtpVisible }) => {
@@ -23,17 +24,13 @@ const OtpValidation = ({ isOtpVisible }) => {
     setTimer(30);
     setIsDisabled(true);
   };
+  const TextInputComponent = useMemo(() => withCssInterop(TextInput), []);
+  const ButtonComponent = withCssInterop(Button);
+  const TextComponent = withCssInterop(Text);
   return (
-    <View style={{ opacity: isOtpVisible ? 1 : 0, marginTop: 20 }}>
-      <View
-        style={{
-          flexDirection: "row",
-          gap: 10,
-          justifyContent: "space-around",
-          alignItems: "center",
-        }}
-      >
-        <TextInput
+    <View className={`${isOtpVisible ? "opacity-100" : "opacity-0"} mt-5`}>
+      <View className="flex flex-row gap-2 justify-around items-center">
+        <TextInputComponent
           label={"OTP"}
           mode="outlined"
           keyboardType="phone-pad"
@@ -42,11 +39,12 @@ const OtpValidation = ({ isOtpVisible }) => {
             setOtp(value);
             setValidOtp(value.length >= 4 && value.length <= 6);
           }}
-          style={{
-            width: "40%",
-            backgroundColor: "transparent",
-            color: "black",
-          }}
+          // style={{
+          //   width: "40%",
+          //   backgroundColor: "transparent",
+          //   color: "black",
+          // }}
+          className="w-[40%] bg-[#F2F2F2] text-black border-black placeholder-gray-500"
           theme={{
             colors: {
               primary: "grey",
@@ -58,48 +56,58 @@ const OtpValidation = ({ isOtpVisible }) => {
           selectionColor="green"
           textColor="black"
           disabled={false}
-        ></TextInput>
-        <Button
+        ></TextInputComponent>
+        <ButtonComponent
           mode="contained"
           onPress={handleResendOtp}
           disabled={isDisabled && isOtpVisible}
-          style={{
-            marginTop: 10,
-            borderRadius: 8,
-            backgroundColor: isDisabled && isOtpVisible ? "grey" : "#0077B6",
-          }}
+          // style={{
+          //   marginTop: 10,
+          //   borderRadius: 8,
+          //   backgroundColor: isDisabled && isOtpVisible ? "grey" : "#0077B6",
+          // }}
+          className={`mt-2 rounded-lg ${
+            isDisabled && isOtpVisible ? "bg-gray-500" : "bg-[#0077B6]"
+          }`}
           labelStyle={{ color: "white", fontWeight: "bold" }}
         >
           Resend OTP
-        </Button>
+        </ButtonComponent>
       </View>
       <View
-        style={{
-          alignItems: "center",
-          marginTop: 20,
-        }}
+        // style={{
+        //   alignItems: "center",
+        //   marginTop: 20,
+        // }}
+        className="mt-5 flex items-center"
       >
-        <Text
-          style={{
-            color: "black",
-            opacity: isDisabled && isOtpVisible ? 1 : 0,
-          }}
+        <TextComponent
+          // style={{
+          //   color: "black",
+          //   opacity: isDisabled && isOtpVisible ? 1 : 0,
+          // }}
+          className={`text-black ${
+            isDisabled && isOtpVisible ? "opacity-100" : "opacity-0"
+          }`}
         >
           Resend OTP in {timer}seconds
-        </Text>
-        <Button
+        </TextComponent>
+        <ButtonComponent
           disabled={!validOtp}
           mode="contained"
-          style={{
-            marginTop: 10,
-            borderRadius: 30,
-            backgroundColor: validOtp ? "#FF8C00" : "grey",
-            width: "60%",
-          }}
+          // style={{
+          //   marginTop: 10,
+          //   borderRadius: 30,
+          //   backgroundColor: validOtp ? "#FF8C00" : "grey",
+          //   width: "60%",
+          // }}
+          className={`mt-2.5 rounded-[30px] ${
+            validOtp ? "bg-[#FF8C00]" : "bg-gray-500"
+          } w-[60%]`}
           labelStyle={{ color: "white", fontWeight: "bold" }}
         >
           Verify OTP
-        </Button>
+        </ButtonComponent>
       </View>
     </View>
   );

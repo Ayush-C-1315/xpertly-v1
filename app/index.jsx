@@ -1,8 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { View, Keyboard, Pressable, Platform } from "react-native";
 
 import Login from "@/components/loginComponent";
 import OtpValidation from "@/components/otpValidation";
+
+const MemoizedLogin = React.memo(Login);
 export default function Index() {
   const [isOtpVisible, setIsOtpVisible] = useState(false);
 
@@ -14,16 +16,10 @@ export default function Index() {
         }
       }}
       accessible={false}
-      style={{ flex: 1 }}
+      className="flex-1"
     >
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          padding: 10,
-        }}
-      >
-        <Login
+      <View className="flex-1 justify-center p-2">
+        <MemoizedLogin
           onSendOtp={(data) => {
             setIsOtpVisible(true);
           }}

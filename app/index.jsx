@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { View, Keyboard, Pressable, Platform } from "react-native";
-import { useRouter, useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
+
 import Login from "@/components/loginComponent";
 
-const MemoizedLogin = React.memo(Login);
 export default function Index() {
-  const [userData, setUserData] = useState(null);
-  const { userData: data } = useLocalSearchParams();
-
-  useEffect(() => {
-    if (data) {
-      setUserData(JSON.parse(data));
-    }
-  }, []);
-
   const router = useRouter();
   return (
     <Pressable
@@ -29,13 +19,12 @@ export default function Index() {
         className="flex-1 justify-center p-2"
         style={{ backgroundColor: "#1E1E2E" }}
       >
-        <MemoizedLogin
+        <Login
           onSendOtp={(data) => {
             router.push({
               pathname: "/otp",
               params: { userData: JSON.stringify(data) },
             });
-            setUserData(data);
           }}
         />
       </View>

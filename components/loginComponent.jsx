@@ -1,86 +1,86 @@
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { Text, TextInput, Menu, Button } from "react-native-paper";
-import { useMemo, useState } from "react";
-import React from "react";
-import withCssInterop from "@/utilities/withCssInterOp";
+import { Text, TextInput, Button } from "react-native-paper";
 import { cssInterop } from "nativewind";
+
+import withCssInterop from "@/utilities/withCssInterOp";
+
 import countryPhoneCodes from "../constants/phones";
+
 const Login = ({ onSendOtp }) => {
   const [user, setUser] = useState({
-    role: "select",
+    role: "Customer",
     phoneNumber: "",
-    // countyPrefix: "",
   });
-  const [visible, setVisible] = useState(false);
+
   const [numbers, setNumbers] = useState(false);
-  const [loginValidatior, setLoginValidator] = useState({
-    role: false,
-    phoneNumber: false,
-    // countyPrefix: false,
-  });
-  const [allValid, setAllValid] = useState(false);
+  const [validPhoneNumber, setValidPhoneNumber] = useState(false);
   const changeHandler = ({ type, value }) => {
-    setUser((prev) => {
-      const updatedUser = { ...prev, [type]: value };
-      setLoginValidator((prevValidator) => {
-        const updatedValidator = {
-          ...prevValidator,
-          [type]: type === "role" ? value !== "select" : value.length === 10,
-        };
-
-        setAllValid(Object.values(updatedValidator).every(Boolean));
-
-        return updatedValidator;
-      });
-
-      return updatedUser;
-    });
-  };
-
-  const submitHandler = () => {
-    if (allValid) {
-      onSendOtp(user);
+    if (type === "phoneNumber") {
+      setUser((prevUser) => ({ ...prevUser, [type]: value }));
+      if (value.length === 10) {
+        setValidPhoneNumber(true);
+      } else {
+        setValidPhoneNumber(false);
+      }
+    } else {
+      onSendOtp({ ...user, [type]: value });
     }
   };
   const TextComponent = cssInterop(Text, { className: "style" });
-  const TextInputComponent = useMemo(() => withCssInterop(TextInput), []);
   const ButtonComponent = withCssInterop(Button);
-  const MenuItem = withCssInterop(Menu.Item);
 
   return (
-    <View>
-      <View className="items-center mb-5">
-        <TextComponent
-          style={{
-            color: "black",
-            fontSize: 30,
-            fontWeight: "bold",
-            color: "#F8FAFC",
-          }}
-          variant="headlineLarge"
+    <View
+      style={{
+        width: "100%",
+        height: "100%",
+        justifyContent: "space-between",
+        paddingVertical: 20,
+      }}
+    >
+      <View></View>
+      <View className="items-center">
+        <View
+          className="items-center mb-5"
+          style={{ justifySelf: "center", marginBottom: 30 }}
         >
-          Welcome!
-        </TextComponent>
-        <View className="flex flex-row gap-2 items-center">
           <TextComponent
+            variant="headlineLarge"
             style={{
               color: "black",
               fontSize: 30,
-              fontWeight: "bold",
+              fontFamily: "Poppins_500Medium",
+              fontFamily: "Merriweather_700Bold",
               color: "#F8FAFC",
             }}
           >
-            to
+            Welcome!
           </TextComponent>
-          <TextComponent
-            // style={{ color: "#8258F6", fontSize: 30, fontWeight: "bold" }}
-            className="text-[#4F46E5] text-4xl font-bold !important"
-          >
-            Xpertly
-          </TextComponent>
+          <View className="flex flex-row gap-2 items-center">
+            <TextComponent
+              variant="headlineLarge"
+              style={{
+                color: "black",
+                fontSize: 30,
+                color: "#F8FAFC",
+                fontFamily: "Poppins_500Medium",
+              }}
+            >
+              to
+            </TextComponent>
+            <TextComponent
+              variant="headlineLarge"
+              style={{
+                fontFamily: "Poppins_500Medium",
+                color: "#4F46E5",
+                fontSize: 30,
+              }}
+            >
+              Xpertly
+            </TextComponent>
+          </View>
         </View>
-      </View>
-      <View className="items-center">
         <TextInput
           label={"Phone"}
           mode="outlined"
@@ -91,12 +91,11 @@ const Login = ({ onSendOtp }) => {
             const value = input.replace(/[^0-9]/g, "").slice(0, 10);
             changeHandler({ type: "phoneNumber", value });
           }}
-          // disabled={true}
-          // style={{
-          //   width: "90%",
-          //   backgroundColor: "transparent",
-          // }}
-          className="w-[90%] bg-[#F2F2F2] text-black border-red-500 placeholder-gray-500"
+          style={{
+            width: "90%",
+            backgroundColor: "transparent",
+            backgroundColor: "#2E2E48",
+          }}
           theme={{
             colors: {
               primary: "#4F46E5",
@@ -111,135 +110,96 @@ const Login = ({ onSendOtp }) => {
           borderColor="#7C3AED"
           outlineStyle={{
             borderColor:
-              loginValidatior.phoneNumber && user.phoneNumber.length > 0
+              validPhoneNumber && user.phoneNumber.length > 0
                 ? "#10B981"
-                : !loginValidatior.phoneNumber && user.phoneNumber.length === 0
+                : !validPhoneNumber && user.phoneNumber.length === 0
                 ? "#6B7280"
                 : "#EF4444",
             borderWidth: 2,
           }}
-          style={{ backgroundColor: "#2E2E48" }}
-          contentStyle={{ color: "#F8FAFC" }}
+          contentStyle={{
+            color: "#F8FAFC",
+            fontFamily: "Manrope_300Light",
+          }}
         ></TextInput>
         <View
-          // style={{
-          //   flexDirection: "row",
-          //   width: "90%",
-          //   borderWidth: 1,
-          //   alignItems: "center",
-          //   gap: 20,
-          //   marginTop: 10,
-          //   borderColor: "transparent",
-          // }}
-          className="flex-row w-[90%] border border-transparent items-center gap-5 mt-2.5"
+          style={{
+            flexDirection: "row",
+            width: "90%",
+            borderWidth: 1,
+            alignItems: "center",
+            marginTop: 10,
+            borderColor: "transparent",
+            paddingLeft: 10,
+            paddingVertical: 5,
+          }}
         >
           <TextComponent
-            // style={{ color: "black" }}
-            className="text-[#FFFFFF]"
+            variant="labelMedium"
+            className="text-[#A6A6B2]"
+            style={{ fontFamily: "Manrope_300Light" }}
           >
-            Login as
+            Logging in as Customer
           </TextComponent>
-          <Menu
-            visible={visible}
-            // style={{ backgroundColor: "#F2F2F2" }}
-            // className="bg-[#F2F2F2]"
-            contentStyle={{ backgroundColor: "#2A2A3B", borderRadius: 5 }}
-            onDismiss={() => setVisible(false)}
-            anchor={
-              <Button
-                mode="outlined"
-                onPress={() => setVisible(true)}
-                // style={{
-                //   backgroundColor: "#f8f9fa",
-                //   width: "auto",
-                //   minWidth: 120,
-                //   borderColor: "black",
-                //   borderRadius: 10,
-                // }}
-                className="bg-[#2A2A3B] w-auto min-w-[120px] border border-[#4F46E5] rounded-[10px]"
-                labelStyle={{ color: "#F8FAFC" }}
-              >
-                {user.role}
-              </Button>
-            }
-          >
-            <MenuItem
-              onPress={() => {
-                changeHandler({ type: "role", value: "Customer" });
-                setVisible(false);
-              }}
-              title="Customer"
-              titleStyle={{ color: "#F8FAFC" }}
-              style={{ backgroundColor: "#2A2A3B", borderRadius: 5 }}
-            />
-            <MenuItem
-              onPress={() => {
-                changeHandler({ type: "role", value: "Expert" });
-                setVisible(false);
-              }}
-              title="Expert"
-              titleStyle={{ color: "#F8FAFC" }}
-              style={{ backgroundColor: "#2A2A3B", borderRadius: 5 }}
-            />
-          </Menu>
-          {/* <Menu
-            visible={numbers}
-            style={{ backgroundColor: "#F2F2F2" }}
-            className="bg-[#F2F2F2]"
-            contentStyle={{ backgroundColor: "#F2F2F2", borderRadius: 0 }}
-            onDismiss={() => setNumbers(false)}
-            anchor={
-              <Button
-                mode="outlined"
-                onPress={() => setNumbers(true)}
-                style={{
-                  backgroundColor: "#f8f9fa",
-                  width: "auto",
-                  borderRadius,
-                  minWidth: 120,
-                  borderColor: "transparent",
-                  borderRightColor: "black",
-                  borderRadius: 5,
-                }}
-                className="bg-[#f8f9fa] w-auto min-w-[120px] border border-black rounded-[10px]"
-                labelStyle={{ color: "black" }}
-              >
-                {user.countyPrefix} ▾
-              </Button>
-            }
-          >
-            {countryPhoneCodes.map(({ code, country }) => (
-              <MenuItem
-                onPress={() => {
-                  changeHandler({ type: "countyPrefix", value: code });
-                  setNumbers(false);
-                }}
-                titleStyle={{ color: "black" }}
-                title={code}
-                style={{ backgroundColor: "#F2F2F2", borderRadius: 5 }}
-                key={country}
-              />
-            ))}
-          </Menu> */}
         </View>
         <ButtonComponent
           mode="contained-tonal"
           style={{
-            width: "40%",
-            // borderColor: "black",
+            width: "90%",
             borderRadius: 5,
-            // paddingHorizontal: 20,
+            paddingVertical: 5,
             marginTop: 10,
-            backgroundColor: allValid ? "#4F46E5" : "grey",
+            backgroundColor: validPhoneNumber ? "#4F46E5" : "grey",
           }}
-          // className={`w-[60%] border px-5 mt-2 ${
-          //   allValid ? "bg-[#FF8C00]" : "bg-gray-500"
-          // }`}
-          labelStyle={{ color: "#F8FAFC" }}
-          onPress={submitHandler}
-          disabled={!allValid}
+          labelStyle={{ color: "#F8FAFC", fontFamily: "Manrope_700Bold" }}
+          onPress={() => changeHandler({ type: "role", value: "Customer" })}
+          disabled={!validPhoneNumber}
         >
-          Send OTP
+          Sign In
+        </ButtonComponent>
+      </View>
+      <View style={{ alignItems: "center", justifySelf: "flex-end" }}>
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: "#A6A6B2",
+            width: "90%",
+            position: "relative",
+            backgroundColor: "#A6A6B2",
+            marginBottom: 20,
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              position: "absolute",
+              top: -2,
+              backgroundColor: "#1E1E2E",
+              paddingHorizontal: 5,
+              zIndex: 5,
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              fontFamily: "Manrope_700Bold",
+              color: "#A6A6B2",
+            }}
+          >
+            or
+          </Text>
+        </View>
+        <ButtonComponent
+          mode="contained-tonal"
+          style={{
+            width: "90%",
+            paddingVertical: 5,
+            borderRadius: 5,
+            marginTop: 10,
+            backgroundColor: validPhoneNumber ? "#4F46E5" : "grey",
+          }}
+          labelStyle={{ color: "#F8FAFC", fontFamily: "Manrope_700Bold" }}
+          onPress={() => changeHandler({ type: "role", value: "Expert" })}
+          disabled={!validPhoneNumber}
+        >
+          Continue as Expert
         </ButtonComponent>
       </View>
     </View>

@@ -1,5 +1,6 @@
-import { Appearance, StatusBar } from "react-native";
+import { Appearance } from "react-native";
 import { PaperProvider } from "react-native-paper";
+import { StatusBar } from "expo-status-bar";
 import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as SplashScreen from "expo-splash-screen";
@@ -32,18 +33,15 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded]);
+
   const colorScheme = Appearance.getColorScheme();
   const theme = colorScheme === "dark" ? Colors.dark : Colors.light;
 
   if (!fontsLoaded) return <></>;
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#1E1E2E" }}>
       <PaperProvider>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="#1E1E2E"
-          translucent
-        />
+        <StatusBar style="light" translucent />
         <Stack
           screenOptions={{
             headerShown: false,

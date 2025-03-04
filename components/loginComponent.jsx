@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { Text, TextInput, Button } from "react-native-paper";
 import { cssInterop } from "nativewind";
@@ -24,8 +24,12 @@ const Login = ({ onSendOtp }) => {
         setValidPhoneNumber(false);
       }
     } else {
-      onSendOtp({ ...user, [type]: value });
+      setUser((prevUser) => ({ ...prevUser, [type]: value }));
     }
+  };
+
+  const submitHandler = () => {
+    onSendOtp(user);
   };
   const TextComponent = cssInterop(Text, { className: "style" });
   const ButtonComponent = withCssInterop(Button);
@@ -51,7 +55,6 @@ const Login = ({ onSendOtp }) => {
               color: "black",
               fontSize: 30,
               fontFamily: "Poppins_500Medium",
-              fontFamily: "Merriweather_700Bold",
               color: "#F8FAFC",
             }}
           >
@@ -80,6 +83,14 @@ const Login = ({ onSendOtp }) => {
               Xpertly
             </TextComponent>
           </View>
+
+          <TextComponent
+            variant="labelMedium"
+            className="text-[#A6A6B2]"
+            style={{ fontFamily: "Manrope_300Light", marginTop: 15 }}
+          >
+            Logging in as {user.role}
+          </TextComponent>
         </View>
         <TextInput
           label={"Phone"}
@@ -122,43 +133,25 @@ const Login = ({ onSendOtp }) => {
             fontFamily: "Manrope_300Light",
           }}
         ></TextInput>
-        <View
-          style={{
-            flexDirection: "row",
-            width: "90%",
-            borderWidth: 1,
-            alignItems: "center",
-            marginTop: 10,
-            borderColor: "transparent",
-            paddingLeft: 10,
-            paddingVertical: 5,
-          }}
-        >
-          <TextComponent
-            variant="labelMedium"
-            className="text-[#A6A6B2]"
-            style={{ fontFamily: "Manrope_300Light" }}
-          >
-            Logging in as Customer
-          </TextComponent>
-        </View>
+
         <ButtonComponent
           mode="contained-tonal"
           style={{
             width: "90%",
             borderRadius: 5,
             paddingVertical: 5,
-            marginTop: 10,
-            backgroundColor: validPhoneNumber ? "#4F46E5" : "grey",
+            marginTop: 20,
+            marginBottom: 40,
+            backgroundColor: validPhoneNumber ? "#4F46E5" : "#6561ad",
           }}
           labelStyle={{ color: "#F8FAFC", fontFamily: "Manrope_700Bold" }}
-          onPress={() => changeHandler({ type: "role", value: "Customer" })}
+          onPress={() => {
+            submitHandler();
+          }}
           disabled={!validPhoneNumber}
         >
           Sign In
         </ButtonComponent>
-      </View>
-      <View style={{ alignItems: "center", justifySelf: "flex-end" }}>
         <View
           style={{
             borderWidth: 1,
@@ -166,7 +159,8 @@ const Login = ({ onSendOtp }) => {
             width: "90%",
             position: "relative",
             backgroundColor: "#A6A6B2",
-            marginBottom: 20,
+            marginTop: 20,
+            marginBottom: 30,
           }}
         >
           <Text
@@ -192,16 +186,23 @@ const Login = ({ onSendOtp }) => {
             width: "90%",
             paddingVertical: 5,
             borderRadius: 5,
-            marginTop: 10,
-            backgroundColor: validPhoneNumber ? "#4F46E5" : "grey",
+            marginTop: 20,
+            backgroundColor: "#FFFFFF",
           }}
-          labelStyle={{ color: "#F8FAFC", fontFamily: "Manrope_700Bold" }}
-          onPress={() => changeHandler({ type: "role", value: "Expert" })}
-          disabled={!validPhoneNumber}
+          labelStyle={{
+            color: "#000000",
+            fontFamily: "Manrope_700Bold",
+          }}
+          onPress={() => {
+            const role = user.role === "Customer" ? "Expert" : "Customer";
+            changeHandler({ type: "role", value: role });
+          }}
+          // disabled={!validPhoneNumber}
         >
-          Continue as Expert
+          Continue as {user.role === "Customer" ? "Expert" : "Customer"}
         </ButtonComponent>
       </View>
+      <View style={{ alignItems: "center", justifySelf: "flex-end" }}></View>
     </View>
   );
 };
